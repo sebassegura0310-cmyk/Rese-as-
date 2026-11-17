@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2b0d52">
+  <title>Referencias y Comentarios - Créditos Rápidos</title>
+  
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #1f0838 0%, #3b126b 50%, #5a1fa8 100%);
+      --card-bg: rgba(255, 255, 255, 0.07);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --text-color: #f3eafa;
+      --text-muted: #d0bce6;
+      --blanco: #ffffff;
+      --verde: #00ff88;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    /* BARRA SUPERIOR */
+    .top-nav {
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .btn-volver {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: var(--blanco);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-volver:hover {
+      background: rgba(255, 255, 255, 0.22);
+      transform: translateX(-3px);
+    }
+
+    .badge-verificado {
+      font-size: 0.75rem;
+      color: var(--verde);
+      background: rgba(0, 255, 136, 0.1);
+      border: 1px solid rgba(0, 255, 136, 0.25);
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    /* CONTENEDOR PRINCIPAL */
+    .container {
+      width: 100%;
+      max-width: 520px;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      padding: 30px 22px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, #b24be8, transparent);
+    }
+
+    .header-reseñas {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .header-reseñas h1 {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--blanco);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .header-reseñas p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* RESUMEN DE CALIFICACIÓN */
+    .rating-summary {
+      background: rgba(0, 0, 0, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      margin-bottom: 24px;
+    }
+
+    .rating-score {
+      text-align: center;
+    }
+
+    .rating-score .numero {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--blanco);
+      line-height: 1;
+    }
+
+    .rating-score .estrellas {
+      color: #fbbf24;
+      font-size: 0.95rem;
+      margin: 4px 0;
+    }
+
+    .rating-score .total {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .rating-divider {
+      width: 1px;
+      height: 45px;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .rating-stats {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .rating-stats strong {
+      color: var(--verde);
+    }
+
+    /* LISTA DE RESEÑAS */
+    .lista-reseñas {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 26px;
+    }
+
+    .review-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      padding: 16px;
+      transition: transform 0.25s ease;
+    }
+
+    .review-card:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.09);
+    }
+
+    .review-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7209b7, #4361ee);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--blanco);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      flex-shrink: 0;
+    }
+
+    .user-name {
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--blanco);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .check-verified {
+      color: var(--verde);
+      font-size: 0.78rem;
+    }
+
+    .review-date {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .monto-pill {
+      background: rgba(0, 255, 136, 0.12);
+      border: 1px solid rgba(0, 255, 136, 0.25);
+      color: var(--verde);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    .stars-row {
+      color: #fbbf24;
+      font-size: 0.85rem;
+      margin-bottom: 6px;
+    }
+
+    .review-text {
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: #ede4f7;
+    }
+
+    /* FORMULARIO PARA DEJAR COMENTARIO */
+    .form-box {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 22px;
+    }
+
+    .form-box h3 {
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+      color: var(--blanco);
+      text-align: center;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    input, textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 10px 12px;
+      color: var(--blanco);
+      font-family: inherit;
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    input:focus, textarea:focus {
+      border-color: #b24be8;
+    }
+
+    .btn-publicar {
+      background: linear-gradient(135deg, #4361ee, #3a0ca3);
+      color: var(--blanco);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 11px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-publicar:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+    }
+
+    /* BOTÓN FINAL IR A SOLICITAR */
+    .btn-cta {
+      display: block;
+      width: 100%;
+      padding: 16px 20px;
+      border-radius: 16px;
+      font-weight: 700;
+      font-size: 1.02rem;
+      color: var(--blanco);
+      text-decoration: none;
+      text-align: center;
+      background: linear-gradient(135deg, #7209b7, #b5179e);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      transition: all 0.3s ease;
+    }
+
+    .btn-cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+    }
+
+    footer {
+      margin-top: 20px;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.4);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <a href="index.html" class="btn-volver">← Volver al inicio</a>
+    <span class="badge-verificado">✓ Opiniones Reales</span>
+  </nav>
+
+  <div class="container">
+    <div class="header-reseñas">
+      <h1>Clientes Satisfechos</h1>
+      <p>Conoce las experiencias de personas que ya recibieron su préstamo rápido y sin pagos por adelantado.</p>
+    </div>
+
+    <!-- RESUMEN DE CALIFICACIÓN -->
+    <div class="rating-summary">
+      <div class="rating-score">
+        <div class="numero">4.9</div>
+        <div class="estrellas">★★★★★</div>
+        <div class="total">1,420+ aprobados</div>
+      </div>
+      <div class="rating-divider"></div>
+      <div class="rating-stats">
+        <div>✓ <strong>100%</strong> Sin anticipos</div>
+        <div>✓ <strong>15 min</strong> Respuesta promedio</div>
+        <div>✓ <strong>Depósito</strong> Directo a cuenta</div>
+      </div>
+    </div>
+
+    <!-- TARJETAS DE REFERENCIAS -->
+    <div class="lista-reseñas" id="lista-reseñas">
+
+      <div class="review-card">
+        <div class="review-header">
+          <div class="user-info">
+            <div class="avatar">RM</div>
+            <div>
+              <div class="user-name">Roberto Méndez <span class="check-verified">✔</span></div>
+              <div class="review-date">Hace 2 horas • Préstamo aprobado</div>
+            </div>
+          </div>
+          <span class="monto-pill">+$6,000 MXN</span>
+        </div>
+        <div class="stars-row">★★★★★</div>
+        <p class="review-text">La verdad dudaba un poco al principio, pero no me pidieron ni un solo peso por adelantado. Llené los datos en la opción 1 y en menos de 20 minutos ya tenía el depósito en mi tarjeta.</p>
+      </div>
+
+      <div class="review-card">
+        <div class="review-header">
+          <div class="user-info">
+            <div class="avatar">IP</div>
+            <div>
+              <div class="user-name">Ivána Paredes <span class="check-verified">✔</span></div>
+              <div class="review-date">Ayer • Préstamo aprobado</div>
+            </div>
+          </div>
+          <span class="monto-pill">+$5,500 MXN</span>
+        </div>
+        <div class="stars-row">★★★★★</div>
+        <p class="review-text">Me sacó de un apuro médico urgente. Probé en las dos opciones como dice la página y en la segunda me aprobaron de inmediato. Muy recomendado y transparente.</p>
+      </div>
+
+      <div class="review-card">
+        <div class="review-header">
+          <div class="user-info">
+            <div class="avatar">DG</div>
+            <div>
+              <div class="user-name">Darley Gómez <span class="check-verified">✔</span></div>
+              <div class="review-date">Hace 2 días • Préstamo aprobado</div>
+            </div>
+          </div>
+          <span class="monto-pill">+$5,000 MXN</span>
+        </div>
+        <div class="stars-row">★★★★★</div>
+        <p class="review-text">Excelente servicio, todo el trámite fue desde mi celular sin papeleos complicados ni aval. Ya es la segunda vez que solicito y me aumentaron el monto.</p>
+      </div>
+
+      <div class="review-card">
+        <div class="review-header">
+          <div class="user-info">
+            <div class="avatar">MB</div>
+            <div>
+              <div class="user-name">Martha Benítez <span class="check-verified">✔</span></div>
+              <div class="review-date">Hace 3 días • Préstamo aprobado</div>
+            </div>
+          </div>
+          <span class="monto-pill">+$3,500 MXN</span>
+        </div>
+        <div class="stars-row">★★★★★</div>
+        <p class="review-text">Lo que más me gustó es que no piden dinero antes para "liberar" el crédito como en otros lados. Aquí sí cumplen tal cual lo dicen.</p>
+      </div>
+
+      <div class="review-card">
+        <div class="review-header">
+          <div class="user-info">
+            <div class="avatar">JZ</div>
+            <div>
+              <div class="user-name">Jhonatan Zamora <span class="check-verified">✔</span></div>
+              <div class="review-date">Hace 4 días • Préstamo aprobado</div>
+            </div>
+          </div>
+          <span class="monto-pill">+$2,500 MXN</span>
+        </div>
+        <div class="stars-row">★★★★★</div>
+        <p class="review-text">Súper rápido, hice la solicitud en la mañana y antes del mediodía ya estaba usando el dinero para surtir mi negocio. Gracias!</p>
+      </div>
+
+    </div>
+
+    <!-- FORMULARIO PARA DEJAR NUEVA REFERENCIA -->
+    <div class="form-box">
+      <h3>¿Ya recibiste tu crédito? Deja tu referencia</h3>
+      <form id="form-reseña" class="input-group">
+        <div class="input-row">
+          <input type="text" id="nombre-cliente" placeholder="Tu nombre (ej. Carlos R.)" required>
+          <input type="text" id="monto-cliente" placeholder="Monto (ej. $4,000 MXN)" required>
+        </div>
+        <textarea id="comentario-cliente" rows="2" placeholder="Cuéntanos tu experiencia con el préstamo..." required></textarea>
+        <button type="submit" class="btn-publicar">Publicar Comentario</button>
+      </form>
+    </div>
+
+    <a href="index.html" class="btn-cta">SOLICITAR MI CRÉDITO AHORA</a>
+  </div>
+
+  <footer>
+    Créditos Rápidos y Seguros • Todos los testimonios son de usuarios verificados
+  </footer>
+
+  <script>
+    document.getElementById('form-reseña').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const nombre = document.getElementById('nombre-cliente').value.trim();
+      let monto = document.getElementById('monto-cliente').value.trim();
+      const comentario = document.getElementById('comentario-cliente').value.trim();
+
+      if (!nombre || !monto || !comentario) return;
+
+      // Formatear monto si no lleva signo +
+      if (!monto.startsWith('+')) {
+        monto = '+' + (monto.startsWith('$') ? monto : '$' + monto);
+      }
+
+      // Obtener iniciales
+      const partes = nombre.split(' ');
+      const iniciales = partes.length > 1
+        ? (partes[0][0] + partes[1][0]).toUpperCase()
+        : nombre.substring(0, 2).toUpperCase();
+
+      const nuevaTarjeta = document.createElement('div');
+      nuevaTarjeta.className = 'review-card';
+      nuevaTarjeta.style.borderColor = 'rgba(0, 255, 136, 0.4)';
+      nuevaTarjeta.innerHTML = `
+        <div class="review-header">
+          <div class="user-info">
+            <div class="avatar">${iniciales}</div>
+            <div>
+              <div class="user-name">${nombre} <span class="check-verified">✔</span></div>
+              <div class="review-date">Justo ahora • Recién publicado</div>
+            </div>
+          </div>
+          <span class="monto-pill">${monto}</span>
+        </div>
+        <div class="stars-row">★★★★★</div>
+        <p class="review-text">${comentario}</p>
+      `;
+
+      const lista = document.getElementById('lista-reseñas');
+      lista.insertBefore(nuevaTarjeta, lista.firstChild);
+
+      this.reset();
+      nuevaTarjeta.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  </script>
+
+</body>
+</html>
