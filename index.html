@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2b0d52">
+  <title>Créditos Rápidos y Seguros</title>
+  
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #1f0838 0%, #3b126b 50%, #5a1fa8 100%);
+      --card-bg: rgba(255, 255, 255, 0.07);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --text-color: #f3eafa;
+      --text-muted: #d0bce6;
+      --blanco: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* BOTÓN SUPERIOR DERECHO DE REFERENCIAS */
+    .top-nav {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 14px;
+    }
+
+    .btn-referencias {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: var(--blanco);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 50px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .btn-referencias:hover {
+      background: rgba(178, 75, 232, 0.45);
+      border-color: rgba(255, 255, 255, 0.45);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(178, 75, 232, 0.35);
+    }
+
+    .landing-container {
+      width: 100%;
+      max-width: 480px;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      padding: 36px 28px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .landing-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, #b24be8, transparent);
+    }
+
+    .logo-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      animation: flotar 3s ease-in-out infinite;
+    }
+
+    @keyframes flotar {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 18px;
+      color: var(--blanco);
+      text-transform: uppercase;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .descripcion {
+      font-size: 0.96rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 22px;
+      text-align: left;
+      background: rgba(0, 0, 0, 0.15);
+      padding: 16px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* CAJA ESTÁTICA CON TAMAÑO FIJO PARA EVITAR CUALQUIER CAMBIO DE DIMENSIÓN */
+    .toast-inline {
+      width: 100%;
+      height: 54px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: #1f0838;
+      padding: 8px 14px;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(168, 85, 247, 0.25);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      text-align: left;
+      overflow: hidden;
+    }
+
+    .toast-inline.visible {
+      opacity: 1;
+    }
+
+    .monto-destacado {
+      color: #059669;
+      font-weight: 700;
+    }
+
+    .punto-verde {
+      position: relative;
+      width: 8px;
+      height: 8px;
+      background-color: #00ff88;
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 6px #00ff88;
+    }
+
+    .punto-verde::after {
+      content: '';
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      right: -3px;
+      bottom: -3px;
+      border-radius: 50%;
+      border: 2px solid #00ff88;
+      animation: pulso-radar 1.5s infinite;
+    }
+
+    @keyframes pulso-radar {
+      0% { transform: scale(0.8); opacity: 1; }
+      70% { transform: scale(2); opacity: 0; }
+      100% { transform: scale(0.8); opacity: 0; }
+    }
+
+    .botones-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .btn-solicitar {
+      display: block;
+      width: 100%;
+      padding: 16px 20px;
+      border-radius: 16px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--blanco);
+      text-decoration: none;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-2 {
+      background: linear-gradient(135deg, #4361ee, #3a0ca3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-1 {
+      background: linear-gradient(135deg, #7209b7, #b5179e);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-solicitar:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+      opacity: 0.95;
+    }
+
+    .seguridad {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: #b8c1ec;
+      margin-top: 10px;
+      font-weight: 500;
+    }
+
+    footer {
+      margin-top: 24px;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.4);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BOTÓN SUPERIOR DERECHO -->
+  <nav class="top-nav">
+    <a href="referencias.html" class="btn-referencias">
+      <span>⭐</span> Referencias y Comentarios
+    </a>
+  </nav>
+
+  <div class="landing-container">
+    <div class="logo-icon">💸</div>
+
+    <h1>Créditos</h1>
+
+    <div class="descripcion">
+      Solicita tu crédito sin ningún tipo de pago inicial o anticipado. Dale click al botón <strong>SOLICITAR</strong> en cualquiera de las dos opciones, marca la cantidad que deseas y sigue los pasos. Al final recibirán en pantalla las opciones disponibles para pedir el crédito. ¡MUCHO ÉXITO!
+    </div>
+
+    <!-- NOTIFICACIÓN ESTÁTICA CON TAMAÑO FIJO Y LIMPIO -->
+    <div id="live-notification" class="toast-inline">
+      <div class="punto-verde"></div>
+      <div style="line-height: 1.25; width: 100%;">
+        <p id="notif-text" style="font-size: 0.78rem; font-weight: 600; color: #1f0838; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+          <strong>María G.</strong> envió una solicitud por <span class="monto-destacado">$4,500 MXN</span>
+        </p>
+        <p id="notif-time" style="font-size: 0.65rem; color: #059669; font-weight: 500; margin-top: 2px;">
+          hace 1 minuto • Solicitud verificada
+        </p>
+      </div>
+    </div>
+
+    <div class="botones-container">
+      <a href="https://o.uvixs.com//tr?offer_id=7&aff_id=14" class="btn-solicitar btn-1">SOLICITAR #1</a>
+      <a href="https://o.uvixs.com//tr?offer_id=10&aff_id=14" class="btn-solicitar btn-2">SOLICITAR #2</a>
+    </div>
+
+    <div class="seguridad">
+      <span>🔒</span> Proceso 100% seguro y sin pagos previos.
+    </div>
+  </div>
+
+  <footer>
+    Recuerda que mientras más solicitudes envíes las posibilidades de ser aprobado aumentan•
+  </footer>
+
+  <script>
+    const actividades = [
+      { texto: "envió una solicitud por", nombre: "Martha B.", monto: "$3,500 MXN", tiempo: "hace 1 minuto" },
+      { texto: "fue aprobado por", nombre: "Roberto M.", monto: "$6,000 MXN", tiempo: "hace unos segundos" },
+      { texto: "inició su trámite por", nombre: "Carmen L.", monto: "$3,000 MXN", tiempo: "hace 3 minutos" },
+      { texto: "recibió su crédito de", nombre: "Ivána P.", monto: "$5,500 MXN", tiempo: "hace 2 minutos" },
+      { texto: "envió una solicitud por", nombre: "Arturo Z.", monto: "$2,500 MXN", tiempo: "hace 30 segundos" },
+      { texto: "fue aprobada por", nombre: "Judith F.", monto: "$6,000 MXN", tiempo: "hace 4 minutos" },
+      { texto: "completó su registro por", nombre: "Ana H.", monto: "$4,000 MXN", tiempo: "hace 2 minutos" },
+      { texto: "envió una solicitud por", nombre: "Marcela V.", monto: "$3,500 MXN", tiempo: "hace 7 minutos" },
+      { texto: "fue aprobada por", nombre: "Darley G.", monto: "$5,000 MXN", tiempo: "hace unos segundos" },
+      { texto: "inició su trámite por", nombre: "Dina F.", monto: "$3,000 MXN", tiempo: "hace 3 minutos" },
+      { texto: "recibió su crédito de", nombre: "Jhonatan Z.", monto: "$2,500 MXN", tiempo: "hace 6 minutos" },
+      { texto: "envió una solicitud por", nombre: "Irving P.", monto: "$2,500 MXN", tiempo: "hace 42 segundos" },
+      { texto: "fue aprobada por", nombre: "Alexandra T.", monto: "$2,000 MXN", tiempo: "hace 6 minutos" },
+      { texto: "completó su registro por", nombre: "Samantha M.", monto: "$4,000 MXN", tiempo: "hace 9 minutos" },
+      { texto: "recibió su crédito de", nombre: "Angie H.", monto: "$1,700 MXN", tiempo: "hace 5 minutos" }
+    ];
+
+    let indice = 0;
+    const toast = document.getElementById("live-notification");
+    const notifText = document.getElementById("notif-text");
+    const notifTime = document.getElementById("notif-time");
+
+    function mostrarNotificacion() {
+      toast.classList.remove('visible');
+
+      setTimeout(() => {
+        const item = actividades[indice];
+        notifText.innerHTML = `<strong>${item.nombre}</strong> ${item.texto} <span class="monto-destacado">${item.monto}</span>`;
+        notifTime.textContent = `${item.tiempo} • Solicitud verificada`;
+
+        toast.classList.add('visible');
+        indice = (indice + 1) % actividades.length;
+      }, 1500);
+    }
+
+    setTimeout(() => {
+      mostrarNotificacion();
+      setInterval(mostrarNotificacion, 9000);
+    }, 300);
+  </script>
+
+</body>
+</html>
