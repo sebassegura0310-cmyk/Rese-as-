@@ -36,40 +36,6 @@
       position: relative;
     }
 
-    /* BOTÓN SUPERIOR DERECHO DE REFERENCIAS */
-    .top-nav {
-      width: 100%;
-      max-width: 480px;
-      display: flex;
-      justify-content: flex-end;
-      margin-bottom: 14px;
-    }
-
-    .btn-referencias {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      color: var(--blanco);
-      text-decoration: none;
-      font-size: 0.82rem;
-      font-weight: 600;
-      padding: 8px 14px;
-      border-radius: 50px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      transition: all 0.3s ease;
-    }
-
-    .btn-referencias:hover {
-      background: rgba(178, 75, 232, 0.45);
-      border-color: rgba(255, 255, 255, 0.45);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(178, 75, 232, 0.35);
-    }
-
     .landing-container {
       width: 100%;
       max-width: 480px;
@@ -94,6 +60,65 @@
       width: 60%;
       height: 4px;
       background: linear-gradient(90deg, transparent, #b24be8, transparent);
+    }
+
+    /* NUEVO BOTÓN DE REFERENCIAS CON ANIMACIÓN DE DESTELLO Y PULSO */
+    .btn-referencias-glow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 13px 20px;
+      margin-bottom: 22px;
+      background: linear-gradient(135deg, rgba(114, 9, 183, 0.7), rgba(181, 23, 158, 0.7));
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: var(--blanco);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(178, 75, 232, 0.35);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      animation: pulso-boton 2.5s infinite ease-in-out;
+      transition: all 0.3s ease;
+    }
+
+    /* Efecto de destello de luz que cruza el botón */
+    .btn-referencias-glow::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        60deg,
+        transparent 35%,
+        rgba(255, 255, 255, 0.25) 50%,
+        transparent 65%
+      );
+      transform: rotate(30deg) translateX(-100%);
+      animation: destello-luz 3s infinite;
+    }
+
+    @keyframes destello-luz {
+      0% { transform: rotate(30deg) translateX(-100%); }
+      30%, 100% { transform: rotate(30deg) translateX(100%); }
+    }
+
+    @keyframes pulso-boton {
+      0%, 100% { transform: scale(1); box-shadow: 0 8px 25px rgba(178, 75, 232, 0.35); }
+      50% { transform: scale(1.02); box-shadow: 0 12px 30px rgba(178, 75, 232, 0.6); }
+    }
+
+    .btn-referencias-glow:hover {
+      opacity: 0.95;
+      transform: translateY(-2px);
     }
 
     .logo-icon {
@@ -138,7 +163,7 @@
       border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    /* CAJA ESTÁTICA CON TAMAÑO FIJO PARA EVITAR CUALQUIER CAMBIO DE DIMENSIÓN */
+    /* CAJA ESTÁTICA CON TAMAÑO FIJO */
     .toast-inline {
       width: 100%;
       height: 54px;
@@ -257,14 +282,13 @@
 </head>
 <body>
 
-  <!-- BOTÓN SUPERIOR DERECHO -->
-  <nav class="top-nav">
-    <a href="referencias.html" class="btn-referencias">
-      <span>⭐</span> Referencias y Comentarios
-    </a>
-  </nav>
-
   <div class="landing-container">
+    
+    <!-- BOTÓN DE REFERENCIAS MEJORADO (DENTRO DE LA TARJETA CON DESTELLO Y PULSO) -->
+    <a href="referencias.html" class="btn-referencias-glow">
+      <span>⭐</span> Ver Opiniones y Referencias de Clientes <span>➔</span>
+    </a>
+
     <div class="logo-icon">💸</div>
 
     <h1>Créditos</h1>
@@ -273,7 +297,7 @@
       Solicita tu crédito sin ningún tipo de pago inicial o anticipado. Dale click al botón <strong>SOLICITAR</strong> en cualquiera de las dos opciones, marca la cantidad que deseas y sigue los pasos. Al final recibirán en pantalla las opciones disponibles para pedir el crédito. ¡MUCHO ÉXITO!
     </div>
 
-    <!-- NOTIFICACIÓN ESTÁTICA CON TAMAÑO FIJO Y LIMPIO -->
+    <!-- NOTIFICACIÓN ESTÁTICA CON TAMAÑO FIJO -->
     <div id="live-notification" class="toast-inline">
       <div class="punto-verde"></div>
       <div style="line-height: 1.25; width: 100%;">
