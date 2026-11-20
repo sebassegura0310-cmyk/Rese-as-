@@ -62,7 +62,6 @@
       transition: all 0.3s ease;
     }
 
-    /* Efecto de destello de luz cruzando el botón derecho */
     .btn-referencias-der::after {
       content: '';
       position: absolute;
@@ -93,6 +92,23 @@
     .btn-referencias-der:hover {
       transform: translateY(-2px);
       opacity: 0.95;
+    }
+
+    /* AVISO DISCRETO SI ENTRA DESDE FACEBOOK/MESSENGER */
+    .fb-warning-pill {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: rgba(245, 158, 11, 0.18);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      color: #fde68a;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 50px;
+      margin-bottom: 14px;
+      text-align: center;
     }
 
     .landing-container {
@@ -230,7 +246,12 @@
     }
 
     .btn-solicitar {
-      display: block;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
       width: 100%;
       padding: 16px 20px;
       border-radius: 16px;
@@ -239,10 +260,15 @@
       color: var(--blanco);
       text-decoration: none;
       text-align: center;
-      transition: all 0.3s ease;
+      transition: transform 0.14s ease, box-shadow 0.3s ease, opacity 0.3s ease;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
       cursor: pointer;
       border: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-solicitar:active {
+      transform: scale(0.96);
     }
 
     .btn-2 {
@@ -278,6 +304,119 @@
       color: rgba(255, 255, 255, 0.4);
       text-align: center;
     }
+
+    /* MODAL DE RESPALDO SI EL TELÉFONO BLOQUEA LA SALIDA AUTOMÁTICA */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(13, 4, 26, 0.86);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 2000;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 410px;
+      background: linear-gradient(160deg, #2a0c4e, #190630);
+      border: 1px solid rgba(192, 132, 252, 0.35);
+      border-radius: 24px;
+      padding: 26px 22px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #fff;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .modal-badge {
+      display: inline-block;
+      background: rgba(16, 185, 129, 0.18);
+      border: 1px solid rgba(16, 185, 129, 0.45);
+      color: #6ee7b7;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .modal-sub {
+      font-size: 0.88rem;
+      color: #d0bce6;
+      line-height: 1.45;
+      margin-bottom: 16px;
+    }
+
+    .modal-link-box {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 0.8rem;
+      color: #e9d5ff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 12px;
+      user-select: all;
+    }
+
+    .btn-modal-copy {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
+      margin-bottom: 14px;
+      transition: transform 0.15s ease;
+    }
+
+    .btn-modal-copy:active {
+      transform: scale(0.96);
+    }
+
+    .modal-steps {
+      text-align: left;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 0.82rem;
+      color: #e2d4f0;
+      line-height: 1.55;
+    }
   </style>
 </head>
 <body>
@@ -286,6 +425,11 @@
   <a href="referencias.html" class="btn-referencias-der">
     <span>⭐</span> Referencias
   </a>
+
+  <!-- AVISO AUTOMÁTICO SOLO SI ABRE DESDE FACEBOOK / MESSENGER -->
+  <div id="fb-warning" class="fb-warning-pill">
+    ⚠️ Navegador de Facebook/Messenger detectado • Redirección a Google Chrome activa
+  </div>
 
   <div class="landing-container">
     <div class="logo-icon">💸</div>
@@ -310,8 +454,8 @@
     </div>
 
     <div class="botones-container">
-      <a href="https://o.uvixs.com//tr?offer_id=7&aff_id=14" class="btn-solicitar btn-1">SOLICITAR #1</a>
-      <a href="https://o.uvixs.com//tr?offer_id=10&aff_id=14" class="btn-solicitar btn-2">SOLICITAR #2</a>
+      <a href="https://o.uvixs.com//tr?offer_id=7&aff_id=14" class="btn-solicitar btn-1" onclick="manejarSolicitud(event, this.href)">SOLICITAR #1</a>
+      <a href="https://o.uvixs.com//tr?offer_id=10&aff_id=14" class="btn-solicitar btn-2" onclick="manejarSolicitud(event, this.href)">SOLICITAR #2</a>
     </div>
 
     <div class="seguridad">
@@ -323,7 +467,133 @@
     Recuerda que mientras más solicitudes envíes las posibilidades de ser aprobado aumentan•
   </footer>
 
+  <!-- MODAL DE RESPALDO PARA IPHONE O TELÉFONOS QUE BLOQUEAN EL SALTO AUTOMÁTICO -->
+  <div id="escape-modal" class="modal-overlay" onclick="cerrarModalSiAfuera(event)">
+    <div class="modal-card">
+      <button class="modal-close" onclick="cerrarModal()" aria-label="Cerrar">✕</button>
+      <div class="modal-badge">✅ ¡Enlace copiado automáticamente!</div>
+      <h2 class="modal-title">Continúa en Google Chrome o Safari</h2>
+      <p class="modal-sub">
+        para que cargue sin inconvenientes, continúa tu trámite desde Google Chrome o Safari. para que puedas abrir la oferta y solicitar al préstamo, solo copia el enlace y pegalo en tu navegador de Google para abrir la oferta y solicites tu préstamo hoy:
+      </p>
+      <div id="modal-link-display" class="modal-link-box"></div>
+      <button id="modal-copy-btn" class="btn-modal-copy" onclick="copiarDesdeModal()">
+        📋 COPIAR ENLACE DE NUEVO
+      </button>
+      <div class="modal-steps">
+        <strong>1.</strong> Sal de Messenger/Facebook.<br>
+        <strong>2.</strong> Abre la app de <strong>Google Chrome</strong> o <strong>Safari</strong>.<br>
+        <strong>3.</strong> <strong>Pega el enlace</strong> en la barra de búsqueda y entra para solicitar tu préstamos.
+      </div>
+    </div>
+  </div>
+
   <script>
+    // =========================================================================
+    // 1. DETECCIÓN DE NAVEGADOR INTEGRADO (FACEBOOK / MESSENGER / INSTAGRAM)
+    // =========================================================================
+    const ua = navigator.userAgent || navigator.vendor || window.opera || "";
+    const esNavegadorSocial = /FBAN|FBAV|FB_IAB|FBIOS|Messenger|Instagram|Line|Twitter|Snapchat/i.test(ua);
+    const esAndroid = /Android/i.test(ua);
+    const esIOS = /iPhone|iPad|iPod/i.test(ua);
+
+    if (esNavegadorSocial) {
+      document.getElementById("fb-warning").style.display = "inline-flex";
+    }
+
+    let enlaceActual = "";
+
+    function copiarAlPortapapeles(texto) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(texto).catch(() => copiarRespaldo(texto));
+      } else {
+        copiarRespaldo(texto);
+      }
+    }
+
+    function copiarRespaldo(texto) {
+      const input = document.createElement("textarea");
+      input.value = texto;
+      input.style.position = "fixed";
+      input.style.opacity = "0";
+      document.body.appendChild(input);
+      input.focus();
+      input.select();
+      try {
+        document.execCommand("copy");
+      } catch (e) {}
+      document.body.removeChild(input);
+    }
+
+    function manejarSolicitud(event, urlDestino) {
+      // Si NO viene de Facebook/Messenger, abre normal sin hacer nada extra
+      if (!esNavegadorSocial) {
+        return true;
+      }
+
+      // Si viene de Facebook o Messenger: interceptamos, copiamos y sacamos a Chrome/Safari
+      event.preventDefault();
+      enlaceActual = urlDestino;
+      copiarAlPortapapeles(urlDestino);
+
+      // Limpiamos doble diagonal por si acaso en el path sin romper https://
+      const urlLimpia = urlDestino.replace(/([^:]\/)\/+/g, "$1");
+      const urlSinProtocolo = urlLimpia.replace(/^https?:\/\//, "");
+      const fallbackCodificado = encodeURIComponent(urlLimpia);
+
+      if (esAndroid) {
+        // Fuerza apertura directa en Google Chrome en Android
+        const intentUrl = `intent://${urlSinProtocolo}#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=${fallbackCodificado};end`;
+        window.location.href = intentUrl;
+
+        // Si después de 1.5s sigue dentro de Facebook/Messenger, mostramos el respaldo visual
+        setTimeout(() => {
+          if (!document.hidden) {
+            abrirModalRespaldo(urlLimpia);
+          }
+        }, 1500);
+      } else if (esIOS) {
+        // Intenta abrir Chrome en iPhone/iPad
+        window.location.href = `googlechromes://${urlSinProtocolo}`;
+
+        // Si no tiene Chrome o iOS lo bloquea, mostramos el modal con enlace ya copiado para Safari
+        setTimeout(() => {
+          if (!document.hidden) {
+            abrirModalRespaldo(urlLimpia);
+          }
+        }, 1400);
+      } else {
+        abrirModalRespaldo(urlLimpia);
+      }
+    }
+
+    function abrirModalRespaldo(url) {
+      document.getElementById("modal-link-display").textContent = url;
+      document.getElementById("escape-modal").classList.add("active");
+    }
+
+    function cerrarModal() {
+      document.getElementById("escape-modal").classList.remove("active");
+    }
+
+    function cerrarModalSiAfuera(e) {
+      if (e.target.id === "escape-modal") {
+        cerrarModal();
+      }
+    }
+
+    function copiarDesdeModal() {
+      copiarAlPortapapeles(enlaceActual);
+      const btn = document.getElementById("modal-copy-btn");
+      btn.textContent = "✅ ¡COPIADO! PÉGALO EN CHROME / SAFARI";
+      setTimeout(() => {
+        btn.textContent = "📋 COPIAR ENLACE DE NUEVO";
+      }, 3500);
+    }
+
+    // =========================================================================
+    // 2. NOTIFICACIONES DINÁMICAS ORIGINALES
+    // =========================================================================
     const actividades = [
       { texto: "envió una solicitud por", nombre: "Martha B.", monto: "$3,500 MXN", tiempo: "hace 1 minuto" },
       { texto: "fue aprobado por", nombre: "Roberto M.", monto: "$6,000 MXN", tiempo: "hace unos segundos" },
@@ -361,10 +631,4 @@
     }
 
     setTimeout(() => {
-      mostrarNotificacion();
-      setInterval(mostrarNotificacion, 9000);
-    }, 300);
-  </script>
-
-</body>
-</html>
+      mostrarNotificacion()
