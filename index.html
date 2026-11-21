@@ -400,11 +400,29 @@
       font-weight: 800;
       cursor: pointer;
       box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
-      margin-bottom: 14px;
+      margin-bottom: 10px;
       transition: transform 0.15s ease;
     }
 
     .btn-modal-copy:active {
+      transform: scale(0.96);
+    }
+
+    .btn-modal-open {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(192, 132, 252, 0.45);
+      background: linear-gradient(135deg, #7c3aed, #5b21b6);
+      color: #ffffff;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 14px;
+      transition: transform 0.15s ease;
+    }
+
+    .btn-modal-open:active {
       transform: scale(0.96);
     }
 
@@ -480,6 +498,9 @@
       <button id="modal-copy-btn" class="btn-modal-copy" onclick="copiarDesdeModal()">
         📋 COPIAR ENLACE DE NUEVO
       </button>
+      <button type="button" class="btn-modal-open" onclick="forzarSalidaChrome()">
+        🌐 INTENTAR ABRIR EN CHROME DE NUEVO
+      </button>
       <div class="modal-steps">
         <strong>1.</strong> Sal de Messenger/Facebook/WhatsApp.<br>
         <strong>2.</strong> Abre la app de <strong>Google Chrome</strong> o <strong>Safari</strong>.<br>
@@ -490,10 +511,22 @@
 
   <script>
     // =========================================================================
-    // 1. DETECCIÓN DE NAVEGADOR INTEGRADO (FACEBOOK / MESSENGER / WHATSAPP / INSTAGRAM)
+    // 1. DETECCIÓN DE NAVEGADOR INTEGRADO (FACEBOOK / MESSENGER / WHATSAPP / IG)
     // =========================================================================
     const ua = navigator.userAgent || navigator.vendor || window.opera || "";
-    const esNavegadorSocial = /FBAN|FBAV|FB_IAB|FBIOS|Messenger|WhatsApp|WA_IAB|Instagram|Line|Twitter|Snapchat/i.test(ua);
+    const ref = document.referrer || "";
+    const queryStr = window.location.search || "";
+
+    const esWhatsApp = /WhatsApp|WA_IAB|WA\/|chat\.whatsapp\.com|wa\.me|whatsapp\.com/i.test(ua)
+      || /whatsapp\.com|wa\.me/i.test(ref)
+      || /whatsapp/i.test(queryStr);
+
+    const esWebViewGenerico = /\bwv\b|WebView|Android.*Version\/[\d.]+.*Chrome\/[\d.]+ Mobile Safari/i.test(ua);
+
+    const esNavegadorSocial = esWhatsApp
+      || esWebViewGenerico
+      || /FBAN|FBAV|FB_IAB|FBIOS|Messenger|Instagram|Line|Twitter|Snapchat/i.test(ua);
+
     const esAndroid = /Android/i.test(ua);
     const esIOS = /iPhone|iPad|iPod/i.test(ua);
 
@@ -525,38 +558,22 @@
       document.body.removeChild(input);
     }
 
-    function manejarSolicitud(event, urlDestino) {
-      // Si NO viene de Facebook/Messenger/WhatsApp, abre normal sin hacer nada extra
-      if (!esNavegadorSocial) {
-        return true;
-      }
-
-      // Si viene de Facebook, Messenger o WhatsApp: interceptamos, copiamos y sacamos a Chrome/Safari
-      event.preventDefault();
-      enlaceActual = urlDestino;
-      copiarAlPortapapeles(urlDestino);
-
-      // Limpiamos doble diagonal por si acaso en el path sin romper https://
-      const urlLimpia = urlDestino.replace(/([^:]\/)\/+/g, "$1");
+    function dispararRedireccionExterna(urlLimpia) {
       const urlSinProtocolo = urlLimpia.replace(/^https?:\/\//, "");
       const fallbackCodificado = encodeURIComponent(urlLimpia);
 
       if (esAndroid) {
-        // Fuerza apertura directa en Google Chrome en Android
         const intentUrl = `intent://${urlSinProtocolo}#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=${fallbackCodificado};end`;
         window.location.href = intentUrl;
 
-        // Si después de 1.5s sigue dentro de Facebook/Messenger/WhatsApp, mostramos el respaldo visual
         setTimeout(() => {
           if (!document.hidden) {
             abrirModalRespaldo(urlLimpia);
           }
         }, 1500);
       } else if (esIOS) {
-        // Intenta abrir Chrome en iPhone/iPad
         window.location.href = `googlechromes://${urlSinProtocolo}`;
 
-        // Si no tiene Chrome o iOS lo bloquea, mostramos el modal con enlace ya copiado para Safari
         setTimeout(() => {
           if (!document.hidden) {
             abrirModalRespaldo(urlLimpia);
@@ -564,6 +581,33 @@
         }, 1400);
       } else {
         abrirModalRespaldo(urlLimpia);
+      }
+    }
+
+    function manejarSolicitud(event, urlDestino) {
+      if (!esNavegadorSocial) {
+        return true;
+      }
+
+      event.preventDefault();
+      const urlLimpia = urlDestino.replace(/([^:]\/)\/+/g, "$1");
+      enlaceActual = urlLimpia;
+      copiarAlPortapapeles(urlLimpia);
+      dispararRedireccionExterna(urlLimpia);
+    }
+
+    function forzarSalidaChrome() {
+      if (!enlaceActual) return;
+      copiarAlPortapapeles(enlaceActual);
+      const urlSinProtocolo = enlaceActual.replace(/^https?:\/\//, "");
+      const fallbackCodificado = encodeURIComponent(enlaceActual);
+
+      if (esAndroid) {
+        window.location.href = `intent://${urlSinProtocolo}#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=${fallbackCodificado};end`;
+      } else if (esIOS) {
+        window.location.href = `googlechromes://${urlSinProtocolo}`;
+      } else {
+        window.open(enlaceActual, "_blank", "noopener,noreferrer");
       }
     }
 
